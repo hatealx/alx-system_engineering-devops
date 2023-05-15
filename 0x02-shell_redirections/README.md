@@ -1,0 +1,1 @@
+lets understand shell redirection
