@@ -1,4 +1,4 @@
- script that creates a file in /tmp
+#script that creates a file in /tmp
 file { '/tmp/school':
   ensure  => 'file',
   path    => '/tmp/school',
