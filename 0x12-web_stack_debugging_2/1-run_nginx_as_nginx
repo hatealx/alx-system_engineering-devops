@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Script to configure Nginx to run as nginx user and listen on port 8080
+
+# Install nginx if not already installed
+if ! command -v nginx &>/dev/null; then
+    echo "Nginx is not installed. Installing..."
+    # Commands to install nginx (if not already installed)
+    # Insert your installation method here, e.g., using a package manager or from source
+    # For example:
+    # apt-get update
+    # apt-get install nginx
+fi
+
+# Modify the nginx.conf file to run as nginx user and listen on port 8080
+nginx_conf="/etc/nginx/nginx.conf"
+
+if [ -f "$nginx_conf" ]; then
+    # Change the user in nginx.conf to nginx
+    sed -i 's/^user .*/user nginx;/g' "$nginx_conf"
+
+    # Add a server block to listen on port 8080 for all IPs
+    echo "Adding configuration for port 8080..."
+    cat <<EOF >>"$nginx_conf"
+server {
+    listen 8080 default_server;
+    listen [::]:8080 default_server;
+    server_name _;
+
+    # Additional server configuration if needed
+    # ...
+
+    location / {
+        # Configuration for serving content
+        # ...
+    }
+}
+EOF
+
+    # Restart Nginx to apply the changes
+    echo "Restarting Nginx..."
+    nginx -s reload
+else
+    echo "Nginx configuration file not found at $nginx_conf"
+    exit 1
+fi
+
